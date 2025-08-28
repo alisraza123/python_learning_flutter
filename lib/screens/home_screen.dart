@@ -183,7 +183,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             alignment: Alignment.topCenter,
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 SizedBox(
                                   width: cardWidth,
@@ -204,25 +204,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 ),
                                 SizedBox(width: spacing),
-                                SizedBox(
-                                  width: cardWidth,
-                                  child: CourseCard(
-                                    title: 'Machine Learning',
-                                    tag: 'NEW',
-                                    tagColor: Colors.pink,
-                                    backgroundImage: 'assets/machineCard.jpg',
-                                  ),
-                                ),
-                                SizedBox(width: spacing),
-                                SizedBox(
-                                  width: cardWidth,
-                                  child: CourseCard(
-                                    title: 'JavaScript',
-                                    tag: 'POPULAR',
-                                    tagColor: Colors.green,
-                                    backgroundImage: 'assets/javascript.jpg',
-                                  ),
-                                ),
                               ],
                             ),
                           ),

@@ -6,6 +6,7 @@ import 'package:learnpythonapp/screens/providers/theme_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:toastification/toastification.dart';
 import '../models/topic_model.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class ContentDetailScreen extends StatefulWidget {
   final String topicId;
@@ -35,6 +36,8 @@ class _ContentDetailScreenState extends State<ContentDetailScreen> {
       );
     }
   }
+ 
+  String? videoId = YoutubePlayer.convertUrlToId("https://www.youtube.com/watch?v=Y8Tko2YC5hA&pp=ygUTcHl0aG9uIGludHJvIHZpZGVvIA%3D%3D");
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +58,14 @@ class _ContentDetailScreenState extends State<ContentDetailScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
           child: Column(
             children: [
+              Container(
+                child: YoutubePlayer(
+                  controller: YoutubePlayerController(
+                    initialVideoId: 'Y8Tko2YC5hA', // Aapka YouTube video ID
+                    flags: YoutubePlayerFlags(autoPlay: false, mute: false),
+                  ),
+                ),
+              ),
               Expanded(
                 child: widget.sub.type == 'program'
                     ? SyntaxView(
@@ -85,25 +96,40 @@ class _ContentDetailScreenState extends State<ContentDetailScreen> {
                             List<TextSpan> spans = [];
                             if (paragraph.contains(':')) {
                               int colonIndex = paragraph.indexOf(':') + 1;
-                              spans.add(TextSpan(
-                                text: paragraph.substring(0, colonIndex),
-                                style: const TextStyle(fontWeight: FontWeight.bold),
-                              ));
-                              spans.add(TextSpan(
-                                text: paragraph.substring(colonIndex),
-                                style: const TextStyle(fontWeight: FontWeight.normal),
-                              ));
+                              spans.add(
+                                TextSpan(
+                                  text: paragraph.substring(0, colonIndex),
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              );
+                              spans.add(
+                                TextSpan(
+                                  text: paragraph.substring(colonIndex),
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                              );
                             } else {
-                              spans.add(TextSpan(
+                              spans.add(
+                                TextSpan(
                                   text: paragraph,
-                                  style: const TextStyle(fontWeight: FontWeight.normal)));
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                              );
                             }
 
                             return Container(
                               margin: const EdgeInsets.only(bottom: 16),
                               padding: const EdgeInsets.all(16),
                               decoration: BoxDecoration(
-                                color: isDark ? Colors.grey[850] : Colors.grey[100],
+                                color: isDark
+                                    ? Colors.grey[850]
+                                    : Colors.grey[100],
                                 borderRadius: BorderRadius.circular(20),
                                 boxShadow: [
                                   BoxShadow(
@@ -136,7 +162,8 @@ class _ContentDetailScreenState extends State<ContentDetailScreen> {
                   // ➤ Next / Finished Button
                   Container(
                     decoration: BoxDecoration(
-                      gradient: (currentIndex < widget.sub.paragraphs.length - 1)
+                      gradient:
+                          (currentIndex < widget.sub.paragraphs.length - 1)
                           ? LinearGradient(colors: AppColors.gradientColors)
                           : null,
                       color: (currentIndex >= widget.sub.paragraphs.length - 1)

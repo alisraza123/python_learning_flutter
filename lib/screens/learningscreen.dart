@@ -41,10 +41,8 @@ class _LearningScreenState extends State<LearningScreen> {
     }
 
     final auth = FirebaseAuth.instance;
-    bool isLoggedIn = false; // <-- Change when user logs in
+    bool isLoggedIn = false;
     isLoggedIn = auth.currentUser != null ? true : false;
-
-    /// ✅ Fake login check (replace this with your real login state)
 
     return SafeArea(
       child: Scaffold(
@@ -61,11 +59,9 @@ class _LearningScreenState extends State<LearningScreen> {
               );
               final progress = topicProgress(index, provider);
 
-              // ✅ Quiz info
               final quizCompleted = provider.isQuizCompleted(topic.id);
               final quizScore = provider.getQuizScore(topic.id);
 
-              /// ✅ Limit access if user not logged in & index > 2
               bool shouldRestrict = !isLoggedIn && index > 2;
 
               return TopicCard(
@@ -75,7 +71,8 @@ class _LearningScreenState extends State<LearningScreen> {
                 progress: progress,
                 quizCompleted: quizCompleted,
                 quizScore: quizScore,
-                isRestricted: shouldRestrict, // ✅ pass restriction info
+                isRestricted: shouldRestrict,
+                isLoggedIn: isLoggedIn, // ✅ Pass login state to TopicCard
               );
             },
           ),

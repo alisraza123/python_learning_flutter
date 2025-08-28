@@ -14,8 +14,8 @@ class TopicCard extends StatefulWidget {
   final bool quizCompleted;
   final int? quizScore;
 
-  /// ✅ NEW: Restrict based on login status
   final bool isRestricted;
+  final bool isLoggedIn; // ✅ NEW: Receive login status
 
   const TopicCard({
     super.key,
@@ -26,6 +26,7 @@ class TopicCard extends StatefulWidget {
     this.quizCompleted = false,
     this.quizScore,
     this.isRestricted = false,
+    required this.isLoggedIn, // ✅ NEW: Add to constructor
   });
 
   @override
@@ -40,6 +41,15 @@ class _TopicCardState extends State<TopicCard> {
       title: const Text('Signup to unlock full content.'),
       autoCloseDuration: const Duration(seconds: 3),
       type: ToastificationType.success,
+    );
+  }
+
+  // ✅ New method to show locked message
+  void _showLockedMessage(BuildContext context) {
+    toastification.show(
+      title: const Text('Please complete the previous topic to unlock this one.'),
+      autoCloseDuration: const Duration(seconds: 3),
+      type: ToastificationType.info,
     );
   }
 
@@ -65,10 +75,9 @@ class _TopicCardState extends State<TopicCard> {
                   _showLoginMessage(context);
                   return;
                 }
-
-                if (!widget.locked) {
-                  setState(() => expanded = !expanded);
-                }
+                
+                // ✅ All users can expand the tile to see sub-contents
+                setState(() => expanded = !expanded);
               },
               leading: Container(
                 width: 40,
@@ -96,7 +105,6 @@ class _TopicCardState extends State<TopicCard> {
                   Text(widget.topic.description),
                   const SizedBox(height: 8),
                   SimpleProgressBar(value: widget.progress),
-
                   if (widget.quizCompleted && widget.quizScore != null)
                     Padding(
                       padding: const EdgeInsets.only(top: 4.0),
@@ -126,7 +134,7 @@ class _TopicCardState extends State<TopicCard> {
             ),
 
             // -----> Expanded Content
-            if (expanded && !widget.locked && !widget.isRestricted)
+            if (expanded && !widget.isRestricted) // ✅ Now only check for login restriction
               Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16,
@@ -157,19 +165,20 @@ class _TopicCardState extends State<TopicCard> {
                         ),
                         title: Text(c.title),
                         onTap: () {
-                          if (widget.isRestricted) {
-                            _showLoginMessage(context);
-                            return;
-                          }
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => ContentDetailScreen(
-                                topicId: widget.topic.id,
-                                sub: c,
+                          // ✅ NEW: Check for lock and login status before navigating
+                          if (widget.locked) {
+                            _showLockedMessage(context);
+                          } else {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => ContentDetailScreen(
+                                  topicId: widget.topic.id,
+                                  sub: c,
+                                ),
                               ),
-                            ),
-                          );
+                            );
+                          }
                         },
                       );
                     }).toList(),
@@ -191,8 +200,9 @@ class _TopicCardState extends State<TopicCard> {
                             ),
                             child: ElevatedButton.icon(
                               onPressed: () {
-                                if (widget.isRestricted) {
-                                  _showLoginMessage(context);
+                                // ✅ NEW: Check for lock and login status before navigating
+                                if (widget.locked) {
+                                  _showLockedMessage(context);
                                   return;
                                 }
 

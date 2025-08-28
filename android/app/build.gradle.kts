@@ -24,7 +24,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.learnpythonapp"
-        minSdk = 23        // change from flutter.minSdkVersion to 23
+        minSdkVersion flutter.minSdkVersion        // change from flutter.minSdkVersion to 23
         targetSdk = 33
         versionCode = 1
         versionName = flutter.versionName
