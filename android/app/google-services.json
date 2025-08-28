@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "765538409473",
+    "project_id": "pythonlearning-8afa3",
+    "storage_bucket": "pythonlearning-8afa3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:765538409473:android:2386e69c6f5a830c2df400",
+        "android_client_info": {
+          "package_name": "com.example.learnpythonapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9oNft_vrhwptOJU6ppqSMb6ASePaAr5M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
